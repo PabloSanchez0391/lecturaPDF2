@@ -16,6 +16,19 @@
 
     <dependencies>
 
+        <!-- PDFBox -->
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>2.0.30</version>
+        </dependency>
+
+        <!-- Tess4J -->
+        <dependency>
+            <groupId>net.sourceforge.tess4j</groupId>
+            <artifactId>tess4j</artifactId>
+            <version>5.11.0</version>
+        </dependency>
 
         <!-- Para escribir archivos fácilmente -->
         <dependency>
@@ -23,6 +36,13 @@
             <artifactId>commons-io</artifactId>
             <version>2.16.1</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>2.0.16</version>
+        </dependency>
+
     </dependencies>
 
 </project>
