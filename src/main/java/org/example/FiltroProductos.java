@@ -23,7 +23,7 @@ public class FiltroProductos {
             }
 
             // Detectar fin (cuando llega el texto legal)
-            if (dentroDeProductos && linea.contains("Recibí de total conformidad")) {
+            if (dentroDeProductos && linea.contains(" COMPRADOR RENUNCIA A SU PROPIO FUERO Y SE SOMETE")) {
                 break;
             }
 
@@ -37,9 +37,10 @@ public class FiltroProductos {
         System.out.println("Productos filtrados guardados en: " + salida.getAbsolutePath());
     }
 
-    public static void main(String[] args) throws IOException {
-        File entrada = new File("resultado.txt");   // el OCR completo
-        File salida = new File("productos.txt");    // solo productos
-        filtrarProductos(entrada, salida);
-    }
+//    public static void main(String[] args) throws IOException {
+//        File entrada = new File("resultado.txt");   // el OCR completo
+//        File salida = new File("productos.txt");    // solo productos
+//        filtrarProductos(entrada, salida);
+//    }
+
 }
