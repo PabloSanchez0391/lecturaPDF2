@@ -52,6 +52,10 @@ public class ProcesadorDocumento {
                         " guardado en: " + new File(nombreCompleto).getAbsolutePath());
             }
 
+            // Al finalizar todas las páginas, guardar JSON global
+            File jsonFinal = new File(generarNombreJSON());
+            FiltroProductos.guardarJSON(jsonFinal);
+
         } catch (IOException | TesseractException e) {
             e.printStackTrace();
         }
@@ -70,6 +74,13 @@ public class ProcesadorDocumento {
                 .format(DateTimeFormatter.ofPattern("dd-MM-yyyy_HH-mm"));
         return baseName + "_pag" + numeroPagina + "_" + fechaHora +
                 (filtrado ? "_filtrado.txt" : ".txt");
+    }
+
+    private String generarNombreJSON() {
+        String baseName = archivoPDF.replaceFirst("[.][^.]+$", ""); // quita extensión
+        String fechaHora = LocalDateTime.now()
+                .format(DateTimeFormatter.ofPattern("dd-MM-yyyy_HH-mm"));
+        return baseName + "_productos_" + fechaHora + ".json";
     }
 
     private void guardarResultado(String nombreArchivo, String contenido) throws IOException {
