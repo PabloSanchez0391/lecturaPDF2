@@ -1,12 +1,17 @@
-package org.example;
+package org.example.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import org.example.dao.ProductoDAO;
+import org.example.model.Producto;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -34,6 +39,8 @@ public class FiltroProductos {
         }
 
         List<Producto> productos = new ArrayList<>();
+        ProductoDAO productoDAO = new ProductoDAO(); // DAO para la BD
+
         String pendingCodigo = null;
         String pendingDescripcion = null;
 
@@ -50,7 +57,14 @@ public class FiltroProductos {
             if (fechaM.find()) {
                 String fecha = fechaM.group(1);
                 if (pendingCodigo != null) {
-                    productos.add(new Producto(pendingCodigo, pendingDescripcion, fecha));
+                    Producto p = new Producto(pendingCodigo, pendingDescripcion, fecha);
+                    productos.add(p);
+                    TODOS_LOS_PRODUCTOS.add(p);
+
+                    // Guardar en la BD
+                    LocalDate fechaSql = parseFecha(fecha);
+                    productoDAO.insertarProducto(p.getCodigo(), p.getDescripcion(), fechaSql);
+
                     pendingCodigo = null;
                     pendingDescripcion = null;
                 }
@@ -145,5 +159,16 @@ public class FiltroProductos {
         ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
         writer.writeValue(salidaJson, TODOS_LOS_PRODUCTOS);
         System.out.println("JSON global guardado en: " + salidaJson.getAbsolutePath());
+    }
+
+    static LocalDate parseFecha(String fecha) {
+        if (fecha == null || fecha.isEmpty()) return null;
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            return LocalDate.parse(fecha, formatter);
+        } catch (DateTimeParseException e) {
+            System.err.println("No se pudo parsear la fecha: " + fecha);
+            return null;
+        }
     }
 }

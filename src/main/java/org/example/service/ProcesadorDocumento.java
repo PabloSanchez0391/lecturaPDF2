@@ -1,10 +1,11 @@
-package org.example;
+package org.example.service;
 
 import net.sourceforge.tess4j.ITesseract;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
+import org.example.model.Producto;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -13,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class ProcesadorDocumento {
 
@@ -46,6 +48,8 @@ public class ProcesadorDocumento {
                 // Guardar versión filtrada
                 String nombreFiltrado = generarNombreSalida(page + 1, true);
                 FiltroProductos.filtrarProductos(new File(nombreCompleto), new File(nombreFiltrado));
+
+//                List<Producto> productosObj = FiltroProductos.filtrarProductos(new File(nombreCompleto));
 
 
                 System.out.println("Texto de la página " + (page + 1) +
